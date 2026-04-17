@@ -10,5 +10,7 @@ const routes = (app) => {
  app.delete("/mba/api/v1/movies/:id", MovieController.deleteMovie);
 
  app.put("/mba/api/v1/movies/:id", MovieController.updateMoive);
+
+ app.get("/mba/api/v1/movies", MovieController.getMovies);
 }
 module.exports = routes

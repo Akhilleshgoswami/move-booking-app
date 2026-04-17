@@ -96,4 +96,23 @@ const updateMoive = async (req, res) => {
   )
  }
 }
-module.exports = { createMovie, getMoive,deleteMovie,updateMoive }
+const getMovies = async(req,res)=>{
+ 
+ try{
+const result = await MovieService.fetchMovies(req.query)
+  if(result.err){
+   errorResponseBody.error = result.err;
+   return res.status(result.code).json(errorResponseBody);
+  }
+  successResponseBody.data = result;
+  return res.status(200).json(successResponseBody);
+
+ }catch(error){
+  console.log("error",error)
+  errorResponseBody.error = error
+  return res.status(500).json(
+   errorResponseBody
+  )
+ }
+}
+module.exports = { createMovie, getMoive,deleteMovie,updateMoive,getMovies }
