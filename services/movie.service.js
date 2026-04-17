@@ -12,4 +12,8 @@ const getMovieById = async (id) => {
  }
  return movie
 }
-module.exports = { getMovieById }
+const updateMovie = async(id,data)=>{
+ const updateData =  await Movie.findByIdAndUpdate(id,data,{new:true})
+ return updateData
+}
+module.exports = { updateMovie,getMovieById }
