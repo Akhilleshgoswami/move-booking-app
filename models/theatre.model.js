@@ -4,10 +4,10 @@ const mongoose = require("mongoose")
  * Define the schema of the theater resource to be stored in the db
  */
 const TheaterSchema = new mongoose.Schema({
-
  name:{
   type:String,
-  required:true
+  required:true,
+  unique:true
  },
  description:String,
  city:{

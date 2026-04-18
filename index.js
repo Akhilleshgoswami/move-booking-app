@@ -4,12 +4,14 @@ const dotenv = require("dotenv")
 const bodyParser = require('body-parser')
 const mongoose = require("mongoose")
 const MoiveRoutes = require("./routes/movie.routes")
+const TheaterRouter = require("./routes/theater.routes")
 const app = express()
 dotenv.config()
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 MoiveRoutes(app) //invoking movie
+TheaterRouter(app) // invoking theater
 app.get("/home", (req, res) => {
  return res.json({ "success": true })
 })
