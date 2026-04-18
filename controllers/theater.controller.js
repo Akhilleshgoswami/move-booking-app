@@ -3,6 +3,11 @@ const {successResponseBody,errorResponseBody} = require("../utils/responseBody")
 const create = async(req,res)=>{
  try {
   const result = await TheaterService.createTheater(req.body);
+  if(result.err){
+   errorResponseBody.error =  result.err
+   errorResponseBody.message = "Validation failed on few parameters of the request body"
+   return res.status(result.code).json(errorResponseBody)
+  }
   successResponseBody.data = result;
   return res.status(201).json(successResponseBody)
  }catch(error){
