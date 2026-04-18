@@ -1,3 +1,4 @@
+const Theater = require("../models/theatre.model");
 const TheaterService = require("../services/theater.service")
 const {successResponseBody,errorResponseBody} = require("../utils/responseBody")
 const create = async(req,res)=>{
@@ -17,6 +18,51 @@ const create = async(req,res)=>{
 
  }
 }
+const getTheater = async(req,res)=>{
+ try{
+ const result = await TheaterService.getDocById(req.params.id);
+ if(result.err){
+   errorResponseBody.error =  result.err
+   return res.status(result.code).json(errorResponseBody)
+ }
+  successResponseBody.data = result;
+  return res.status(200).json(successResponseBody)
+ }catch(error){
+  errorResponseBody.error = error;
+  return res.status(500).json(errorResponseBody)
+ }
+}
+
+const deleteTheater = async(req,res)=>{
+ try{
+ const result = await TheaterService.deleteTheaterd(req.params.id);
+  successResponseBody.data = result;
+  return res.status(200).json(successResponseBody)
+ }catch(error){
+  errorResponseBody.error = error;
+  return res.status(500).json(errorResponseBody)
+ }
+}
+
+const fetchTheater= async(req,res) =>{
+ try{
+const result = await TheaterService.fetchTheater(req.query)
+  if(result.err){
+   errorResponseBody.error = result.err;
+   return res.status(result.code).json(errorResponseBody);
+  }
+  successResponseBody.data = result;
+  return res.status(200).json(successResponseBody);
+
+ }catch(error){
+  console.log("error",error)
+  errorResponseBody.error = error
+  return res.status(500).json(
+   errorResponseBody
+  )
+ }
+}
 module.exports = {
- create
+ create,
+ getTheater,deleteTheater,fetchTheater
 }
