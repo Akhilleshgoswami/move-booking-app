@@ -92,13 +92,21 @@ const getAllTheaters = async (data)=>{
 
   console.log("data",data)
   let query = {};
+  let pagination = {}
   if(data && data.city){
    query.city = data.city
   }
   if( data && data.pincode){
    query.pinCode = data.pincode;
   }
-  const result = await Theater.find(query);
+  if(data && data.limit){
+   pagination.limit = data.limit
+  }
+  if(data && data.skip){
+   const perPage = (data.limit) ? data.limit : 5
+   pagination.skip = data.skip * perPage
+  }
+  const result = await Theater.find(query,{},pagination);
   return result
  }catch(error){
   console.log("error",error);
