@@ -62,7 +62,39 @@ const result = await TheaterService.fetchTheater(req.query)
   )
  }
 }
+const updateMovies = async(req,res)=>{
+ try{
+const result =  await TheaterService.updateMoviesInTheaters(req.params.id,req.body.movieIds,req.body.insert)
+if(result.err){
+   errorResponseBody.error = result.err;
+   return res.status(result.code).json(errorResponseBody);
+  }
+  successResponseBody.data = result;
+  return res.status(200).json(successResponseBody);
+
+ }catch(error){
+  console.log("error",error)
+  errorResponseBody.error = error
+  return res.status(500).json(
+   errorResponseBody
+  )
+ }
+}
+
+const fetchAllTheater = async(req,res) =>{
+ try{
+const result = await TheaterService.getAllTheaters(req.query)
+  successResponseBody.data = result;
+  return res.status(200).json(successResponseBody);
+
+ }catch(error){
+  errorResponseBody.error = error
+  return res.status(500).json(
+   errorResponseBody
+  )
+ }
+}
 module.exports = {
  create,
- getTheater,deleteTheater,fetchTheater
+ getTheater,deleteTheater,fetchTheater,updateMovies,fetchAllTheater
 }

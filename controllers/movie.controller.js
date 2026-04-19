@@ -97,7 +97,6 @@ const updateMoive = async (req, res) => {
  }
 }
 const getMovies = async(req,res)=>{
- 
  try{
 const result = await MovieService.fetchMovies(req.query)
   if(result.err){

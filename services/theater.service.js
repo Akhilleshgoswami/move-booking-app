@@ -61,8 +61,53 @@ const fetchTheater= async(filter) =>{
  }
  return theater
 }
+
+const updateMoviesInTheaters =async (theaterId,movieIds,insert) =>{
+ const theater = await Theater.findById(theaterId)
+  if(!theater){
+   return {
+    err:"No such theater found with the giving Theater Id",
+    code : 404
+   }
+  }
+if(insert){
+   movieIds.forEach((movieId)=>{
+   if(!theater.movies.some(ids => ids !== movieId)){
+   theater.movies.push(movieId);
+   }
+  })
+ }
+ else {
+  const updatedMovies = movieIds.filter(id =>
+  !theater.movies.includes(id)
+);
+  theater.movies = updatedMovies;    
+ }
+ await theater.save();
+ return theater
+  
+}
+const getAllTheaters = async (data)=>{
+ try{
+
+  console.log("data",data)
+  let query = {};
+  if(data && data.city){
+   query.city = data.city
+  }
+  if( data && data.pincode){
+   query.pinCode = data.pincode;
+  }
+  const result = await Theater.find(query);
+  return result
+ }catch(error){
+  console.log("error",error);
+  throw error
+
+ }
+}
 module.exports = {
 createTheater,
 getDocById,
- deleteTheaterd,fetchTheater
+ deleteTheaterd,fetchTheater,updateMoviesInTheaters,getAllTheaters
 }
