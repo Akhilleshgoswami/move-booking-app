@@ -8,6 +8,7 @@ const TheaterRouter = require("./routes/theater.routes")
 const app = express()
 dotenv.config()
 
+mongoose.set("debug",true)
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 MoiveRoutes(app) //invoking movie

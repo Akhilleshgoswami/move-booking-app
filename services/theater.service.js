@@ -1,5 +1,5 @@
 const Theater = require("../models/theatre.model")
-
+const Movie = require("../models/movie.model")
 const createTheater = async(data)=>{
  try{
  const result = await Theater.create(data);
@@ -89,8 +89,6 @@ if(insert){
 }
 const getAllTheaters = async (data)=>{
  try{
-
-  console.log("data",data)
   let query = {};
   let pagination = {}
   if(data && data.city){
@@ -98,6 +96,11 @@ const getAllTheaters = async (data)=>{
   }
   if( data && data.pincode){
    query.pinCode = data.pincode;
+  }
+  if(data && data.movieId){
+  const movie = await Movie.findById(data.movieId); 
+   query.movies = {$all:movie}
+
   }
   if(data && data.limit){
    pagination.limit = data.limit
