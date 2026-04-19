@@ -1,5 +1,6 @@
 const Theater = require("../models/theatre.model")
 const Movie = require("../models/movie.model")
+const mongoose = require("mongoose")
 const createTheater = async(data)=>{
  try{
  const result = await Theater.create(data);
@@ -72,7 +73,8 @@ const updateMoviesInTheaters =async (theaterId,movieIds,insert) =>{
   }
 if(insert){
    movieIds.forEach((movieId)=>{
-   if(!theater.movies.some(ids => ids !== movieId)){
+   console.log(movieId)
+   if(!theater.movies.some(ids => ids.toString() === movieId.toString())){
    theater.movies.push(movieId);
    }
   })
@@ -117,8 +119,26 @@ const getAllTheaters = async (data)=>{
 
  }
 }
+const getMoviesInATheater =  async (id) =>{ 
+
+ try{
+  const theater = await Theater.findById(id,{name:1,movies:1,address:1}).populate("movies")
+  if(!theater){
+   return {
+    err:"No such theater found with the giving Theater Id",
+    code : 404
+   }
+  }
+  return theater
+ }catch(err){
+
+  console.log("error",err)
+  throw err
+ }
+
+}
 module.exports = {
 createTheater,
 getDocById,
- deleteTheaterd,fetchTheater,updateMoviesInTheaters,getAllTheaters
+ deleteTheaterd,fetchTheater,updateMoviesInTheaters,getAllTheaters,getMoviesInATheater
 }

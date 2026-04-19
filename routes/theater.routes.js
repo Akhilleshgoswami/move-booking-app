@@ -6,8 +6,8 @@ const router = (app)=>{
  app.get("/mba/api/v1/theater/:id",TheaterController.getTheater)
  app.delete("/mba/api/v1/theater/:id",TheaterController.deleteTheater)
  app.put("/mba/api/v1/theater/:id/movies",TheaterController.updateMovies)
+ app.get("/mba/api/v1/theater/:id/movies",TheaterController.getMovies)
  app.get("/mba/api/v1/theater",TheaterController.fetchAllTheater)
- app.get("/mba/api/v1/theater/:id",TheaterController.updateMovies)
 }
 
 module.exports = router
