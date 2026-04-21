@@ -8,13 +8,11 @@ const TheaterRouter = require("./routes/theater.routes")
 const app = express()
 dotenv.config()
 
+mongoose.set("debug",true)
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 MoiveRoutes(app) //invoking movie
 TheaterRouter(app) // invoking theater
-app.get("/home", (req, res) => {
- return res.json({ "success": true })
-})
 app.listen(process.env.PORT, async () => {
  console.log("app runing on the port ", process.env.PORT)
  try {
