@@ -4,6 +4,7 @@ const authMiddelware = require("../middlewares/auth.middlewares")
 const router = (app)=>{
  app.post("/mba/api/v1/auth/signup",authMiddelware.validateUserCreateRequest,userController.createUser)
  app.post("/mba/api/v1/auth/signin",authMiddelware.validateSignInRequest,userController.signIn)
+ app.post("/mba/api/v1/auth/reset",authMiddelware.isAuthenticated,userController.resetPassword)
 }
 
 module.exports = router

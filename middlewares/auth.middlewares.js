@@ -56,10 +56,12 @@ try{
 
 
  const token = req.headers['x-access-token']
+  console.log("token",token)
  if(!token){
   errorResponseBody.error = "authenticated token is not provied"
   return res.status(403).json(errorResponseBody)
  }
+  console.log("process",process.env.AUTH_KEY)
  const result = jwt.verify(token,process.env.AUTH_KEY)
  if(!token){
   errorResponseBody.error = "Token is not varifyed"
@@ -73,6 +75,7 @@ try{
    errorResponseBody.error ="User not found"
    return res.status(error.status).json(errorResponseBody);
   }
+  console.log("eroor",error)
   errorResponseBody.error = error;
    return res.status(500).json(errorResponseBody);
  }

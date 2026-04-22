@@ -37,17 +37,15 @@ const UserSchema = new mongoose.Schema({
 // before saving the user in db 
 UserSchema.pre('save', async function () {
   console.log("🔥 Pre-save triggered", this.password);
-
   if (!this.isModified('password')) return;
-
   this.password = await bcrypt.hash(this.password, 10);
-
   console.log("✅ Hashed password", this.password);
 });
 /**
  * plainPassowrd - input password giving by user 
  */
 UserSchema.methods.isValidPassword = async function (plainPassword) {
+ console.log("plainPassword",plainPassword)
   return await bcrypt.compare(plainPassword, this.password);
 };
 const User = mongoose.model("Users", UserSchema)
