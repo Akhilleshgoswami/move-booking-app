@@ -34,6 +34,22 @@ const validateUserCreateRequest = (req, res, next) => {
   next();
 };
 
+const validateSignInRequest = (req,res,next)=>{
+
+  const {  email, password}= req.body;
+  // email validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!email || typeof email !== "string" || !emailRegex.test(email)) {
+    return badRequest(res, "Valid email is required");
+  }
+
+  // password validation
+  if (!password || typeof password !== "string" || password.length < 6) {
+    return badRequest(res, "Password must be at least 6 characters long");
+  }
+next()
+
+}
 module.exports = {
-  validateUserCreateRequest
+  validateUserCreateRequest,validateSignInRequest
 };
