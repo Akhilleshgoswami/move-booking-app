@@ -1,5 +1,6 @@
-const { badRequest } = require("../utils/responseBody");
-
+const { getUserById } = require("../services/user.service");
+const { badRequest, errorResponseBody } = require("../utils/responseBody");
+const jwt = require("jsonwebtoken")
 const validateUserCreateRequest = (req, res, next) => {
   const { name, email, password, userType, userStatus } = req.body;
 
@@ -50,6 +51,32 @@ const validateSignInRequest = (req,res,next)=>{
 next()
 
 }
+const isAuthenticated = async(req,res,next)=>{
+try{
+
+
+ const token = req.headers['x-access-token']
+ if(!token){
+  errorResponseBody.error = "authenticated token is not provied"
+  return res.status(403).json(errorResponseBody)
+ }
+ const result = jwt.verify(token,process.env.AUTH_KEY)
+ if(!token){
+  errorResponseBody.error = "Token is not varifyed"
+  return res.status(401).json(errorResponseBody)
+ }
+ const user = await getUserById(result.id)
+  req.user = user.id
+ next()
+ }catch(error){
+  if(error.code == 404){
+   errorResponseBody.error ="User not found"
+   return res.status(error.status).json(errorResponseBody);
+  }
+  errorResponseBody.error = error;
+   return res.status(500).json(errorResponseBody);
+ }
+}
 module.exports = {
-  validateUserCreateRequest,validateSignInRequest
+  validateUserCreateRequest,validateSignInRequest,isAuthenticated
 };
