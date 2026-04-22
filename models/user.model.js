@@ -35,12 +35,20 @@ const UserSchema = new mongoose.Schema({
  },
 }, { timestamps: true })
 // before saving the user in db 
-UserSchema.pre('save', async function(next) {
- //a trigger to encrypt a plain password in db before saving the user
- bcrypt.hash(password)
-const hash  = await bcrypt.hash(this.password,10)
- this.password = hash
- next()
-})
+UserSchema.pre('save', async function () {
+  console.log("🔥 Pre-save triggered", this.password);
+
+  if (!this.isModified('password')) return;
+
+  this.password = await bcrypt.hash(this.password, 10);
+
+  console.log("✅ Hashed password", this.password);
+});
+/**
+ * plainPassowrd - input password giving by user 
+ */
+UserSchema.methods.isValidPassword = async function (plainPassword) {
+  return await bcrypt.compare(plainPassword, this.password);
+};
 const User = mongoose.model("Users", UserSchema)
 module.exports = User
