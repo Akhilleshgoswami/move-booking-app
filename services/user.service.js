@@ -54,7 +54,7 @@ const updateUserRoleAndStatus = async (data, id) => {
   if (data.userStatus) {
    updateQuery.userStatus = data.userStatus
   }
-  const user = await User.findOneAndUpdate({ _id: id }, updateQuery,{new:true,runValidators:true});
+  const user = await User.findByIdAndUpdate(id, updateQuery,{new:true,runValidators:true});
   if (!user) {
    return {
     status: 404,
