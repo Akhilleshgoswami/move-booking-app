@@ -48,8 +48,8 @@ const resetPassword = async (req, res) => {
  try {
   const user = await userService.getUserById(req.user)
   const isOldPasswordCorrect = await user.isValidPassword(req.body.oldPassword)
-  if(!isOldPasswordCorrect){
-   throw {err:"Invalid old passowrd, Please write the correct password"}
+  if (!isOldPasswordCorrect) {
+   throw { err: "Invalid old passowrd, Please write the correct password" }
   }
   user.password = req.body.newPassword
   await user.save()
@@ -67,4 +67,20 @@ const resetPassword = async (req, res) => {
   return res.status(500).json(errorResponseBody)
  }
 }
-module.exports = { createUser, signIn, resetPassword }
+const update = async (req, res) => {
+ try {
+  const result = await userService.updateUserRoleAndStatus(req.body, req.params.id)
+  successResponseBody.data = result
+  successResponseBody.message = "SuccessFully update the user"
+  return res.status(200).json(successResponseBody)
+ } catch (error) {
+
+  console.log("eroor", error)
+  errorResponseBody.error = error;
+  return res.status(500).json(errorResponseBody)
+
+ }
+}
+
+
+module.exports = { createUser, signIn, resetPassword,update }

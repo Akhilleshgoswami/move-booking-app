@@ -56,7 +56,6 @@ try{
 
 
  const token = req.headers['x-access-token']
-  console.log("token",token)
  if(!token){
   errorResponseBody.error = "authenticated token is not provied"
   return res.status(403).json(errorResponseBody)
@@ -67,6 +66,7 @@ try{
   errorResponseBody.error = "Token is not varifyed"
   return res.status(401).json(errorResponseBody)
  }
+  console.log("result",result)
  const user = await getUserById(result.id)
   req.user = user.id
  next()
