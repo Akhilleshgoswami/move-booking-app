@@ -1,4 +1,5 @@
-const User = require("../models/user.model")
+const User = require("../models/user.model");
+const { STATUS } = require("../utils/constants");
 
 const createUser = async (data) => {
  try {
@@ -17,7 +18,7 @@ const getUserByEmail = async (email) => {
 
   if (!user) {
    return {
-    status: 404,
+    status: STATUS.NOT_FOUND,
     err: "Not able to found user with the givin email"
    }
   }
@@ -33,7 +34,7 @@ const getUserById = async (id) => {
 
   if (!user) {
    return {
-    status: 404,
+    status: STATUS.NOT_FOUND,
     err: "Not able to found user with the givin email"
    }
   }
@@ -54,10 +55,10 @@ const updateUserRoleAndStatus = async (data, id) => {
   if (data.userStatus) {
    updateQuery.userStatus = data.userStatus
   }
-  const user = await User.findByIdAndUpdate(id, updateQuery,{new:true,runValidators:true});
+  const user = await User.findByIdAndUpdate(id, updateQuery, { new: true, runValidators: true });
   if (!user) {
    return {
-    status: 404,
+    status: STATUS.NOT_FOUND,
     err: "Not able to found user with the givin email"
    }
   }
@@ -70,5 +71,5 @@ const updateUserRoleAndStatus = async (data, id) => {
 
 }
 module.exports = {
- createUser, getUserByEmail, getUserById,updateUserRoleAndStatus
+ createUser, getUserByEmail, getUserById, updateUserRoleAndStatus
 }

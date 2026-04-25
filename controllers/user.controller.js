@@ -1,5 +1,6 @@
 
 const userService = require("../services/user.service");
+const { STATUS } = require("../utils/constants");
 const { successResponseBody, errorResponseBody } = require("../utils/responseBody");
 const jwt = require("jsonwebtoken")
 const createUser = async (req, res) => {
@@ -8,11 +9,11 @@ const createUser = async (req, res) => {
   const user = await userService.createUser(req.body);
   successResponseBody.data = user;
   successResponseBody.message = "user create successfull"
-  return res.status(201).json(successResponseBody)
+  return res.status(STATUS.CREATED).json(successResponseBody)
 
  } catch (error) {
   errorResponseBody.error = error;
-  return res.status(500).json(errorResponseBody)
+  return res.status(STATUS.INTERNAL_SERVER_ERROR).json(errorResponseBody)
  }
 }
 const signIn = async (req, res) => {
@@ -21,7 +22,7 @@ const signIn = async (req, res) => {
   const isValidPassowrd = await user.isValidPassword(req.body.password)
   if (!isValidPassowrd) {
    errorResponseBody.error = "Passowrd is not correct"
-   return res.status(400).json(errorResponseBody)
+   return res.status(STATUS.BAD_REQUEST).json(errorResponseBody)
   }
   if (user.err) {
    errorResponseBody.error = user.err
@@ -35,12 +36,12 @@ const signIn = async (req, res) => {
   };
 
   successResponseBody.message = "user fetch successful";
-  return res.status(201).json(successResponseBody)
+  return res.status(STATUS.CREATED).json(successResponseBody)
  } catch (error) {
   console.log("eroor", error)
 
   errorResponseBody.error = error;
-  return res.status(500).json(errorResponseBody)
+  return res.status(STATUS.INTERNAL_SERVER_ERROR).json(errorResponseBody)
  }
 }
 
@@ -58,13 +59,13 @@ const resetPassword = async (req, res) => {
    role: user.userType,
   }
   successResponseBody.message = "Password updated successfull"
-  return res.status(200).json(successResponseBody)
+  return res.status(STATUS.OK).json(successResponseBody)
  }
  catch (error) {
 
   console.log("eroor", error)
   errorResponseBody.error = error;
-  return res.status(500).json(errorResponseBody)
+  return res.status(STATUS.INTERNAL_SERVER_ERROR).json(errorResponseBody)
  }
 }
 const update = async (req, res) => {
@@ -72,15 +73,15 @@ const update = async (req, res) => {
   const result = await userService.updateUserRoleAndStatus(req.body, req.params.id)
   successResponseBody.data = result
   successResponseBody.message = "SuccessFully update the user"
-  return res.status(200).json(successResponseBody)
+  return res.status(STATUS.OK).json(successResponseBody)
  } catch (error) {
 
   console.log("eroor", error)
   errorResponseBody.error = error;
-  return res.status(500).json(errorResponseBody)
+  return res.status(STATUS.INTERNAL_SERVER_ERROR).json(errorResponseBody)
 
  }
 }
 
 
-module.exports = { createUser, signIn, resetPassword,update }
+module.exports = { createUser, signIn, resetPassword, update }
