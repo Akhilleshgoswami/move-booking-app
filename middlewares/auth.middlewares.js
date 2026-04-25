@@ -61,13 +61,11 @@ const isAuthenticated = async (req, res, next) => {
    errorResponseBody.error = "authenticated token is not provied"
    return res.status(403).json(errorResponseBody)
   }
-  console.log("process", process.env.AUTH_KEY)
   const result = jwt.verify(token, process.env.AUTH_KEY)
   if (!token) {
    errorResponseBody.error = "Token is not varifyed"
    return res.status(401).json(errorResponseBody)
   }
-  console.log("result", result)
   const user = await getUserById(result.id)
   req.user = user.id
   next()
