@@ -1,17 +1,48 @@
- 
+
 const Booking = require("../models/booking.model");
-const createBooking =  async(data)=>{
- try{
+const { STATUS } = require("../utils/constants");
+
+const createBooking = async (data) => {
+ try {
   const response = await Booking.create(data);
- return response
- }catch(error){
-  console.log("error",error)
+  return response
+ } catch (error) {
+  console.log("error", error)
   throw error
  }
 }
 
+const updateBooking = async (data, bookingId) => {
+ try {
+  const result = await Booking.findByIdAndUpdate(bookingId, data, {
+   new: true,
+   runValidators: true
+  })
+  if (!result) {
+   throw {
+    err: "No booking found for the given Id",
+    code: STATUS.NOT_FOUND
+   }
+  }
+  return result
+ } catch (error) {
+  if (error.name == "ValidationError") {
+   let err = {
+
+   }
+   Object.keys(error.errors).forEach(key => {
+    err[key] = error.errors[key].message
+   })
+   throw { err: err, code: STATUS.UNPROCESSABLE_ENTITY }
+
+  }
+  console.log("error", error)
+  throw error
+ }
+
+}
 module.exports = {
- createBooking
+ createBooking, updateBooking
 }
 
 

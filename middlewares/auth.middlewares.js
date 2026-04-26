@@ -103,6 +103,10 @@ const isClientOrAdmin = async (req, res, next) => {
  }
  next()
 }
+const canChangeStatus = async(req,res,next)=>{
+const user = await getUserById(req.user)
+ if(user.userType  == "")
+}
 module.exports = {
  validateUserCreateRequest, validateSignInRequest, isAuthenticated, isAdmin, isClient, isClientOrAdmin
 };
